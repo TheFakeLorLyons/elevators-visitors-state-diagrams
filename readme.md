@@ -1,8 +1,6 @@
 ## __Project Description__
 
-Goal: Create visually appealing and descriptive state diagrams and embed them on a simple static webpage.
-
-This project is a portion of my ["CS260 Class at Bristol State University"](https://mermaid-js.github.io/mermaid/#/) in software design. This course has covered all the aspects of the software development and design process, and I became interested in mermaid because it makes nice charts rather easily. I thought that embedding them into html is a simple way to share them, so this package can serve a simple template for to draw upon in the future.
+This project is a portion of my ["CS260 Class at Bristol State University"](https://mermaid-js.github.io/mermaid/#/) in software design. This course has covered all the aspects of the software development and design process, and I became interested in mermaid because it makes nice charts rather easily. I thought that embedding them into html is a simple way to share them, so this package can serve a simple template for to draw upon in the future. The charts themselves are visible under the "visible_on_github" directory".
   
 ### __Installation__
 

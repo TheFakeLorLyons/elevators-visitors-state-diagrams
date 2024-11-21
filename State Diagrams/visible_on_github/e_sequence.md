@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant V as Visitor
     participant F as Floor

@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant MC as MaintenanceCrew
     participant EM as ElevatorManager
