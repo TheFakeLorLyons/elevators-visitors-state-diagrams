@@ -1,6 +1,6 @@
 ## __Project Description__
 
-This project is a portion of my ["CS260 Class at Bristol State University"](https://mermaid-js.github.io/mermaid/#/) in software design. This course has covered all the aspects of the software development and design process, and I became interested in mermaid because it makes nice charts rather easily. I thought that embedding them into html is a simple way to share them, so this package can serve a simple template for to draw upon in the future. The charts themselves are visible under the "visible_on_github" directory".
+This project is a portion of my ["CS260 Class at Bristol State University"](http://cisweb.bristolcc.edu/~ik/) in software design. This course has covered all the aspects of the software development and design process, and I became interested in mermaid because it makes nice charts rather easily. I thought that embedding them into html is a simple way to share them, so this package can serve a simple template for to draw upon in the future. The charts themselves are visible under the "visible_on_github" directory".
   
 ### __Installation__
 
@@ -10,7 +10,7 @@ This project is a portion of my ["CS260 Class at Bristol State University"](http
 
 3. git clone https://github.com/your-username/elevators-visitors-state-diagrams.git
 
-4. cd elevators-visitors-state-diagrams
+4. cd root
 
 5. Begin the application using:
     - npm start, which will begin running the application locally over port 3000, which it will link to ine terminal
