@@ -1,44 +1,59 @@
 ```mermaid
+---
+title: Elevator Simulation Class Diagram
+---
 classDiagram
-    class Visitor {
-        -visitor_id: int
+    class Building {
         -name: string
-        -destination_list: vector~Floor~
-        -visitor_status: enum~Status~
-        -access_level: int
-        -visitStartTime: datetime
-        +updateStatus(status)
-        +handleEmergency()
-        +addDestination(Floor)
-        +getAccessLevel(): int
-        +getVisitDuration(): int
+        -floors: vector~Floor~
+        -elevator_manager: ElevatorManager
     }
-    
-    class PassengersList {
-        -global_passengers: vector~Passenger~
-        -activePassengers: int
-        -totalServed: int
-        +getAllPassengers()
+
+    class Configuration {
+        -user_settings: vector~var~
+        -theme: enum~Theme~
+        +saveUserSettings(Configuration): boolean
+        +displaySettings()
+        +updateTheme(Theme)
+    }
+    note for Configuration "Configuration determines the settings for
+    the GUI that the user
+    actually interacts with."    
+
+
+    class Elevator {
+        -elevator_id: int
+        -capacity: int
+        -destination: int
+        -current_num_passengers: int
+        -passenger_list: vector~Passenger*~
+        -current_requests: vector~Request*~
+        -status: enum~ElevatorStatus~
+        +move(destination)
         +addPassenger(Passenger)
         +removePassenger(Passenger)
-        +getStatistics(): PassengerStats
-        +filterByStatus(Status): vector~Passenger~
+        +determineNextStopandDirection(): [Floor, distance]
+        +updateStatus(status): enum~ElevatorStatus~
     }
     
-    class Passenger {
-        -visitor_fk: int
-        -current_floor: Floor
-        -time_waiting: int
-        -priority: int
-        -destination_floor: Floor
-        -status: enum~PassengerStatus~
-        +requestElevator()
-        +recordBoardingTime()
-        +exitQueueEarly()
-        +updateWaitingTime()
-        +getPriority(): int
+    class ElevatorManager {
+        -active_requests: RequestQueue
+        -waiting_list: vector~Passenger*~
+        -sim_Timer: Timer
+        -elevators: vector~Elevator~
+        +calculateOptimalDistribution()
+        +assignRequest(Request)
+        +handleEmergency()
+        +setElevatorToMaintenanceMode()
+        +getPerformanceMetrics(): Metrics
     }
-    
+    note for Elevator "Elevator may 
+    utilize an 'IElevator' interface
+    in the future if it was desired
+    to extend the elevator class, and
+    potentially allow for other types
+    of elevators (ie freight/passenger)."
+
     class Floor {
         -floor_id: int
         -floor_number: int
@@ -46,120 +61,140 @@ classDiagram
         -access_level: int
         -capacity: int
         -current_occupancy: int
-        -waiting_area: WaitingArea
         +getAccessLevel(): string
         +addToWaitingArea(Passenger)
         +removeFromWaitingArea(Passenger)
         +isAtCapacity(): boolean
-        +getOccupancyStatus(): Status
     }
     
-    class Elevator {
-        -elevator_id: int
-        -capacity: int
-        -destination: int
-        -current_num_passengers: int
-        -passenger_list: vector~Passenger~
-        -current_requests: vector~Request~
-        -status: enum~ElevatorStatus~
-        -direction: enum~Direction~
-        -maintenance_status: enum~MaintenanceStatus~
-        +move(destination)
+    class GUI {
+        -current_view: string
+        -configuration: Configuration
+        +update()
+        +showStatistics()
+        +displayMenu()
+        +switchView(string): view
+        +editSimulationSettings(settings): boolean
+    }
+
+    class IO {
+        +loadSimulationData(File)
+        +saveSimulationState(File, Simulation)
+        +loadConfiguration(File)
+        +exportReport(Simulation)
+    }   
+
+    class Passenger {
+        -passenger_id: id
+        -visitor_fk: int
+        -current_floor: Floor
+        -time_waiting: int
+        +requestElevator()
+        +recordBoardingTime()
+    }
+
+    class PassengersList {
+        -global_passengers: vector~Passenger*~
+        -current_Passengers: vector~Passenger*~
+        -totalServed: int
+        +getAllPassengers()
         +addPassenger(Passenger)
-        +removePassenger(Passenger)
-        +emergencyStop()
-        +calculateNextStop(): Floor
-        +needsMaintenance(): boolean
-    }
-    
-    class ElevatorManager {
-        -active_requests: RequestQueue
-        -waiting_list: vector~Passenger~
-        -sysTimer: Timer
-        -elevators: vector~Elevator~
-        -maintenance_schedule: MaintenanceSchedule
-        +calculateOptimalDistribution()
-        +assignRequest(Request)
-        +handleEmergency()
-        +optimizeRoutes()
-        +scheduleMaintenance()
-        +getPerformanceMetrics(): Metrics
-    }
-    
-    class RequestQueue {
-        -requestMap: Map~Elevator, vector~Request~~
-        -priorityQueue: PriorityQueue~Request~
-        +addRequest(Request)
-        +getNextRequest(): Request
-        +reorderQueue()
-        +removeCancelledRequests()
-        +getPriorityRequests(): vector~Request~
+        +removePassenger(Passenger*)
     }
     
     class Request {
         -request_id: int
-        -passenger_fk: int
-        -source_floor: Floor
-        -destination_floor: Floor
-        -priority: int
+        -visitor_fk: int
+        -source_floor: Floor*
+        -destination: Floor*
         -timestamp: datetime
         -status: enum~RequestStatus~
         +updateStatus(RequestStatus)
         +calculatePriority(): int
         +isExpired(): boolean
     }
-    
-    class GUI {
-        -current_view: string
-        -configuration: Configuration
-        -theme: Theme
-        -activeAlerts: vector~Alert~
-        +update()
-        +showStatistics()
-        +displayMenu()
-        +updateRealTimeData()
-        +showAlerts()
-        +switchView(string)
-    }
-    
+
+    class RequestQueue {
+        -requestMap: Map~vector~Elevator*~~, ~vector~Request*~~
+        +addRequest(Request)
+        +getNextRequest(): Request
+        +reorderQueue()
+    }    
+
     class Simulation {
         -statistics: SimulationStatistics
         -current_file: File
-        -scenario: SimulationScenario
-        -speed: float
         +loadFile(File)
         +saveFile(File)
-        +adjustSpeed(float)
-        +pauseSimulation()
         +generateReport()
         +runScenario(SimulationScenario)
     }
-    
-    class Timer {
+
+    class ITime 
+    <<interface>> ITime 
+    ITime : setGlobalTime()
+    ITime : getGlobalTime()
+    ITime : changeTimezone()
+    ITime : pause()
+    ITime : resume()
+
+    class SystemTimer {
+        -currentTime: datetime
+        -lastLoggedIn: datetime
+        -getPerformanceMetrics()
+        -resetSimulationTime()
+    }
+
+    class SimulationTimer {
         -start_time: datetime
         -events: map~string, datetime~
         -interval: int
-        -paused: boolean
-        +scheduleEvent(var name, int interval)
-        +trackWaitTime(Visitor visitor)
+        -paused?: boolean
+        +scheduleEvent(var name, int interval): boolean
+        +trackWaitTime(Visitor visitor): minutes
         +setDoorHoldTime(int seconds)
-        +measurePerformance()
-        +pause()
-        +resume()
+        +updateTickInterval(interval): boolean
     }
+    note for ServicesTimer "Timer is a singleton 
+    that may be drawn 
+    on by any other classes
+    in the application 
+    contextually."
 
-    Visitor <|-- Passenger
-    PassengersList --> Passenger
-    Building *-- Floor
+    class Visitor {
+        -visitor_id: int
+        -name: string
+        -destination_list: vector~Floor~
+        -visitor_status: enum~Status~
+        -access_level: int
+        -visitStartTime: datetime
+        -patience: int
+        +updateStatus(status)
+        +handleEmergency()
+        +getAccessLevel(): int
+        +getVisitDuration(): int
+        +exitQueueEarly()
+    } 
+    
+    Building "1" *-- "*" Floor : contains
     Building *-- ElevatorManager
-    ElevatorManager *-- Timer
-    ElevatorManager *-- RequestQueue
-    ElevatorManager o-- "1..*" Elevator
-    Floor --> RequestQueue
-    Elevator --> Request
-    RequestQueue *-- Request
-    GUI --> Simulation
-    Simulation --> Building
-    Simulation ..> IO
+    Building ..> Simulation
+    Elevator o-- Passenger
+    Elevator o-- Request
+    Elevator --> RequestQueue
+    ElevatorManager "1" *-- "1" PassengersList : has
+    ElevatorManager "1" *-- "1" RequestQueue : has
+    ElevatorManager "1" --> "1" SimulationTimer : contains reference to
+    Floor "1..*" --> Elevator : contains
+    Floor "1..*" --> Visitor : contains
     GUI o-- Configuration
+    Passenger --|> Visitor
+    PassengersList --> Passenger
+    RequestQueue --> Floor
+    RequestQueue *-- Request
+    SimulationTimer --|> ITime
+    Simulation ..> IO
+    Simulation --> GUI
+    Simulation ..> SystemTimer
+    SystemTimer --|> ITime
 ```

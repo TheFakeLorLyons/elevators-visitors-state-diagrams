@@ -11,7 +11,11 @@ sequenceDiagram
         alt Handle Request
             V->>EM: Requests Elevator
 
-            EM->>E: Checks Elevator Status
+            par Elevator Determination
+                EM->>E: Checks Elevator Status
+            and Floor Eligibility
+                EM->>F: Check Floor Capacity&Access Level
+            end
 
             alt Elevator Available
                 E->>EM: Returns Position/Status
@@ -28,7 +32,9 @@ sequenceDiagram
                 end
             end
         else Not Authorized/Authenticated
-            EM->>V: Null/Exception Message 
+            EM->>V: Null/Exception Message
+        else Visitor Leaves Before Elevator Arrival
+            V->>RQ: Visitor Takes Stairs/Leaves           
         end
         
         par Process Visitors
