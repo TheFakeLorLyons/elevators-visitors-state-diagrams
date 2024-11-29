@@ -35,7 +35,7 @@ sequenceDiagram
         IO-->>-Simulation: currentScenarioData
 
         Simulation->>+GUI: loadExistingScenario()
-        GUI->>-Config: modifyScenarioConfiguration()
+        GUI-->>-Config: modifyScenarioConfiguration()
         Config->>+Building: updateBuildingParameters()
         Building-->>-Config: submitted
 
