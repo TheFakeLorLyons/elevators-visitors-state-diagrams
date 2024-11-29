@@ -10,11 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function getDiagramSource(id) {
         const diagramSources = {
             'class-mmd': 'diagrams/full_class_diagram.md',
-            'visitor-mmd': 'diagrams/visitor.md',
-            'elevator-mmd': 'diagrams/elevator.md',
+            'visitor-mmd': 'diagrams/visitor_state_diagram.md',
+            'elevator-mmd': 'diagrams/elevator_state_diagram.md',
             'activity-mmd': 'diagrams/run_sim_act_diagram.md',
             'sequence-mmd': 'diagrams/run_sim_seq_diagram.md',
-            'ride-seq-mmd': 'diagrams/elevator_ride_sequence.md'
+            'ride-seq-mmd': 'diagrams/elevator_ride_sequence.md',
+            'view-stats-mmd': 'diagrams/view_statistics_seq.md',
+            'create-edit-mmd': 'diagrams/create_edit_scenario_seq.md'
         };
         return diagramSources[id] || `diagrams/${id}.md`;
     }

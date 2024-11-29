@@ -16,10 +16,10 @@ sequenceDiagram
     Simulation->>+GUI: getConfigs()
     GUI->>+Config: loadConfiguration()
     alt User Configuration Exists
-        Config-->>+Simulation: applyUserConfig()
+        Config->>+Simulation: applyUserConfig()
         Simulation-->>-Config: applied
     else
-        Config-->>+Simulation: applyDefaultConfig()
+        Config->>+Simulation: applyDefaultConfig()
         Simulation-->>-Config: applied
     end
     Config -->>-GUI: configurationsLoaded  
@@ -29,7 +29,7 @@ sequenceDiagram
     Note over Simulation,IO: Initializing Scenario
     Simulation->>+IO: getScenario()
     alt User Scenario Exists
-        IO-->>+Simulation: loadUserScenario()
+        IO->>+Simulation: loadUserScenario()
         Simulation-->>-IO: scenarioLoaded
     else
         IO->>+Simulation: loadScenario()
@@ -56,7 +56,7 @@ sequenceDiagram
     
     #Timer and Global Setup
     Simulation->>+Time: initialize(scenarioParameters)
-    Time->>-Simulation: simulationTimeInitialized
+    Time-->>-Simulation: simulationTimeInitialized
     ElevatorManager->>+Time: synchronize()
     Time-->>-ElevatorManager: elevatorsSynchronized
     

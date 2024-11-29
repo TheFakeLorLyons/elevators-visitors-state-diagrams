@@ -65,7 +65,9 @@ body {
 #activity-mmd,
 #sequence-mmd, 
 #ride-seq-mmd,
-#class-mmd {
+#class-mmd,
+#view-stats-mmd,
+#create-edit-mmd {
   /*scale: 85%;*/
   background: #a6fdf7b4;
   border-radius: 50px 50px 50px 50px;

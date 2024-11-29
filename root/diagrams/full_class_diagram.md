@@ -7,6 +7,7 @@ classDiagram
         -name: string
         -floors: vector~Floor~
         -elevator_manager: ElevatorManager
+        -visitors: vector~Visitor~
     }
 
     class Configuration {
@@ -186,8 +187,8 @@ classDiagram
     ElevatorManager "1" *-- "1" PassengersList : has
     ElevatorManager "1" *-- "1" RequestQueue : has
     ElevatorManager "1" --> "1" SimulationTimer : contains reference to
-    Floor "1..*" --> Elevator : contains
-    Floor "1..*" --> Visitor : contains
+    Floor "1" --> "*" Elevator : contains
+    Floor "1" --> "*" Visitor : contains
     GUI o-- Configuration
     Passenger --|> Visitor
     PassengersList --> Passenger

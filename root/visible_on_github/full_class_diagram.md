@@ -7,6 +7,7 @@ classDiagram
         -name: string
         -floors: vector~Floor~
         -elevator_manager: ElevatorManager
+        -visitors: vector~Visitor~
     }
 
     class Configuration {
